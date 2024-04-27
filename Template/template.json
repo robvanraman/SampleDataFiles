@@ -1,0 +1,598 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "namespaces_tradeProcessingIn_name": {
+            "defaultValue": "tradeProcessingIn",
+            "type": "String"
+        },
+        "namespaces_tradeProcessingOut_name": {
+            "defaultValue": "tradeProcessingOut",
+            "type": "String"
+        },
+        "streamingjobs_tradeProcessing_name": {
+            "defaultValue": "tradeProcessing",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.EventHub/namespaces",
+            "apiVersion": "2023-01-01-preview",
+            "name": "[parameters('namespaces_tradeProcessingIn_name')]",
+            "location": "eastus",
+            "sku": {
+                "name": "Standard",
+                "tier": "Standard",
+                "capacity": 2
+            },
+            "properties": {
+                "minimumTlsVersion": "1.2",
+                "publicNetworkAccess": "Enabled",
+                "disableLocalAuth": false,
+                "privateEndpointConnections": [],
+                "zoneRedundant": true,
+                "isAutoInflateEnabled": false,
+                "maximumThroughputUnits": 0,
+                "kafkaEnabled": true
+            }
+        },
+        {
+            "type": "Microsoft.ServiceBus/namespaces",
+            "apiVersion": "2022-10-01-preview",
+            "name": "[parameters('namespaces_tradeProcessingOut_name')]",
+            "location": "eastus",
+            "sku": {
+                "name": "Premium",
+                "tier": "Premium",
+                "capacity": 1
+            },
+            "properties": {
+                "premiumMessagingPartitions": 1,
+                "minimumTlsVersion": "1.2",
+                "publicNetworkAccess": "Enabled",
+                "disableLocalAuth": false,
+                "privateEndpointConnections": [],
+                "zoneRedundant": true
+            }
+        },
+        {
+            "type": "Microsoft.StreamAnalytics/streamingjobs",
+            "apiVersion": "2021-10-01-preview",
+            "name": "[parameters('streamingjobs_tradeProcessing_name')]",
+            "location": "East US",
+            "tags": {
+                "hidden-link:/Microsoft.StreamAnalytics/streamingjobs/settings": "{\"createdFrom\":\"Portal\"}"
+            },
+            "sku": {
+                "name": "StandardV2",
+                "capacity": 10
+            },
+            "properties": {
+                "sku": {
+                    "name": "StandardV2"
+                },
+                "outputStartMode": "JobStartTime",
+                "outputStartTime": "2024-04-27T20:58:32.32Z",
+                "eventsOutOfOrderPolicy": "Adjust",
+                "outputErrorPolicy": "Stop",
+                "eventsOutOfOrderMaxDelayInSeconds": 0,
+                "eventsLateArrivalMaxDelayInSeconds": 5,
+                "dataLocale": "en-US",
+                "compatibilityLevel": "1.2",
+                "contentStoragePolicy": "SystemAccount",
+                "jobType": "Cloud"
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/authorizationrules",
+            "apiVersion": "2023-01-01-preview",
+            "name": "[concat(parameters('namespaces_tradeProcessingIn_name'), '/RootManageSharedAccessKey')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_tradeProcessingIn_name'))]"
+            ],
+            "properties": {
+                "rights": [
+                    "Listen",
+                    "Manage",
+                    "Send"
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs",
+            "apiVersion": "2023-01-01-preview",
+            "name": "[concat(parameters('namespaces_tradeProcessingIn_name'), '/inventory')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_tradeProcessingIn_name'))]"
+            ],
+            "properties": {
+                "retentionDescription": {
+                    "cleanupPolicy": "Delete",
+                    "retentionTimeInHours": 1
+                },
+                "messageRetentionInDays": 1,
+                "partitionCount": 1,
+                "status": "Active"
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs",
+            "apiVersion": "2023-01-01-preview",
+            "name": "[concat(parameters('namespaces_tradeProcessingIn_name'), '/securityin')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_tradeProcessingIn_name'))]"
+            ],
+            "properties": {
+                "retentionDescription": {
+                    "cleanupPolicy": "Delete",
+                    "retentionTimeInHours": 1
+                },
+                "messageRetentionInDays": 1,
+                "partitionCount": 1,
+                "status": "Active"
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs",
+            "apiVersion": "2023-01-01-preview",
+            "name": "[concat(parameters('namespaces_tradeProcessingIn_name'), '/tradein')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_tradeProcessingIn_name'))]"
+            ],
+            "properties": {
+                "retentionDescription": {
+                    "cleanupPolicy": "Delete",
+                    "retentionTimeInHours": 1
+                },
+                "messageRetentionInDays": 1,
+                "partitionCount": 1,
+                "status": "Active"
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs",
+            "apiVersion": "2023-01-01-preview",
+            "name": "[concat(parameters('namespaces_tradeProcessingIn_name'), '/trader')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_tradeProcessingIn_name'))]"
+            ],
+            "properties": {
+                "retentionDescription": {
+                    "cleanupPolicy": "Delete",
+                    "retentionTimeInHours": 1
+                },
+                "messageRetentionInDays": 1,
+                "partitionCount": 1,
+                "status": "Active"
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/networkrulesets",
+            "apiVersion": "2023-01-01-preview",
+            "name": "[concat(parameters('namespaces_tradeProcessingIn_name'), '/default')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_tradeProcessingIn_name'))]"
+            ],
+            "properties": {
+                "publicNetworkAccess": "Enabled",
+                "defaultAction": "Allow",
+                "virtualNetworkRules": [],
+                "ipRules": [],
+                "trustedServiceAccessEnabled": false
+            }
+        },
+        {
+            "type": "Microsoft.ServiceBus/namespaces/authorizationrules",
+            "apiVersion": "2022-10-01-preview",
+            "name": "[concat(parameters('namespaces_tradeProcessingOut_name'), '/RootManageSharedAccessKey')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.ServiceBus/namespaces', parameters('namespaces_tradeProcessingOut_name'))]"
+            ],
+            "properties": {
+                "rights": [
+                    "Listen",
+                    "Manage",
+                    "Send"
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.ServiceBus/namespaces/networkrulesets",
+            "apiVersion": "2022-10-01-preview",
+            "name": "[concat(parameters('namespaces_tradeProcessingOut_name'), '/default')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.ServiceBus/namespaces', parameters('namespaces_tradeProcessingOut_name'))]"
+            ],
+            "properties": {
+                "publicNetworkAccess": "Enabled",
+                "defaultAction": "Allow",
+                "virtualNetworkRules": [],
+                "ipRules": [],
+                "trustedServiceAccessEnabled": false
+            }
+        },
+        {
+            "type": "Microsoft.ServiceBus/namespaces/queues",
+            "apiVersion": "2022-10-01-preview",
+            "name": "[concat(parameters('namespaces_tradeProcessingOut_name'), '/positionagg')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.ServiceBus/namespaces', parameters('namespaces_tradeProcessingOut_name'))]"
+            ],
+            "properties": {
+                "maxMessageSizeInKilobytes": 1024,
+                "lockDuration": "PT1M",
+                "maxSizeInMegabytes": 1024,
+                "requiresDuplicateDetection": false,
+                "requiresSession": false,
+                "defaultMessageTimeToLive": "P14D",
+                "deadLetteringOnMessageExpiration": false,
+                "enableBatchedOperations": true,
+                "duplicateDetectionHistoryTimeWindow": "PT10M",
+                "maxDeliveryCount": 10,
+                "status": "Active",
+                "autoDeleteOnIdle": "P10675199DT2H48M5.4775807S",
+                "enablePartitioning": false,
+                "enableExpress": false
+            }
+        },
+        {
+            "type": "Microsoft.StreamAnalytics/streamingjobs/inputs",
+            "apiVersion": "2021-10-01-preview",
+            "name": "[concat(parameters('streamingjobs_tradeProcessing_name'), '/inventory')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.StreamAnalytics/streamingjobs', parameters('streamingjobs_tradeProcessing_name'))]"
+            ],
+            "properties": {
+                "type": "Stream",
+                "datasource": {
+                    "type": "Microsoft.EventHub/EventHub",
+                    "properties": {
+                        "consumerGroupName": "tradeProcessing_inventory_consumer_group",
+                        "eventHubName": "inventory",
+                        "serviceBusNamespace": "tradeProcessingIn",
+                        "sharedAccessPolicyName": "tradeProcessing_inventory_policy",
+                        "authenticationMode": "ConnectionString"
+                    }
+                },
+                "compression": {
+                    "type": "None"
+                },
+                "serialization": {
+                    "type": "Json",
+                    "properties": {
+                        "encoding": "UTF8"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.StreamAnalytics/streamingjobs/inputs",
+            "apiVersion": "2021-10-01-preview",
+            "name": "[concat(parameters('streamingjobs_tradeProcessing_name'), '/securityin')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.StreamAnalytics/streamingjobs', parameters('streamingjobs_tradeProcessing_name'))]"
+            ],
+            "properties": {
+                "type": "Stream",
+                "datasource": {
+                    "type": "Microsoft.EventHub/EventHub",
+                    "properties": {
+                        "consumerGroupName": "tradeProcessing_securityin_consumer_group",
+                        "eventHubName": "securityin",
+                        "serviceBusNamespace": "tradeProcessingIn",
+                        "sharedAccessPolicyName": "tradeProcessing_securityin_policy",
+                        "authenticationMode": "ConnectionString"
+                    }
+                },
+                "compression": {
+                    "type": "None"
+                },
+                "serialization": {
+                    "type": "Json",
+                    "properties": {
+                        "encoding": "UTF8"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.StreamAnalytics/streamingjobs/inputs",
+            "apiVersion": "2021-10-01-preview",
+            "name": "[concat(parameters('streamingjobs_tradeProcessing_name'), '/tradein')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.StreamAnalytics/streamingjobs', parameters('streamingjobs_tradeProcessing_name'))]"
+            ],
+            "properties": {
+                "type": "Stream",
+                "datasource": {
+                    "type": "Microsoft.EventHub/EventHub",
+                    "properties": {
+                        "consumerGroupName": "tradeProcessing_tradein_consumer_group",
+                        "eventHubName": "tradein",
+                        "serviceBusNamespace": "tradeProcessingIn",
+                        "sharedAccessPolicyName": "tradeProcessing_tradein_policy",
+                        "authenticationMode": "ConnectionString"
+                    }
+                },
+                "compression": {
+                    "type": "None"
+                },
+                "serialization": {
+                    "type": "Json",
+                    "properties": {
+                        "encoding": "UTF8"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.StreamAnalytics/streamingjobs/inputs",
+            "apiVersion": "2021-10-01-preview",
+            "name": "[concat(parameters('streamingjobs_tradeProcessing_name'), '/trader')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.StreamAnalytics/streamingjobs', parameters('streamingjobs_tradeProcessing_name'))]"
+            ],
+            "properties": {
+                "type": "Stream",
+                "datasource": {
+                    "type": "Microsoft.EventHub/EventHub",
+                    "properties": {
+                        "consumerGroupName": "tradeProcessing_trader_consumer_group",
+                        "eventHubName": "trader",
+                        "serviceBusNamespace": "tradeProcessingIn",
+                        "sharedAccessPolicyName": "tradeProcessing_trader_policy",
+                        "authenticationMode": "ConnectionString"
+                    }
+                },
+                "compression": {
+                    "type": "None"
+                },
+                "serialization": {
+                    "type": "Json",
+                    "properties": {
+                        "encoding": "UTF8"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.StreamAnalytics/streamingjobs/outputs",
+            "apiVersion": "2021-10-01-preview",
+            "name": "[concat(parameters('streamingjobs_tradeProcessing_name'), '/positionagg')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.StreamAnalytics/streamingjobs', parameters('streamingjobs_tradeProcessing_name'))]"
+            ],
+            "properties": {
+                "datasource": {
+                    "type": "Microsoft.ServiceBus/Queue",
+                    "properties": {
+                        "queueName": "positionagg",
+                        "propertyColumns": [],
+                        "systemPropertyColumns": {},
+                        "serviceBusNamespace": "tradeProcessingOut",
+                        "sharedAccessPolicyName": "RootManageSharedAccessKey",
+                        "authenticationMode": "ConnectionString"
+                    }
+                },
+                "serialization": {
+                    "type": "Json",
+                    "properties": {
+                        "encoding": "UTF8",
+                        "format": "LineSeparated"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs/authorizationrules",
+            "apiVersion": "2023-01-01-preview",
+            "name": "[concat(parameters('namespaces_tradeProcessingIn_name'), '/inventory/PreviewDataPolicy')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_tradeProcessingIn_name'), 'inventory')]",
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_tradeProcessingIn_name'))]"
+            ],
+            "properties": {
+                "rights": [
+                    "Listen"
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs/authorizationrules",
+            "apiVersion": "2023-01-01-preview",
+            "name": "[concat(parameters('namespaces_tradeProcessingIn_name'), '/tradein/PreviewDataPolicy')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_tradeProcessingIn_name'), 'tradein')]",
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_tradeProcessingIn_name'))]"
+            ],
+            "properties": {
+                "rights": [
+                    "Listen"
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs/authorizationrules",
+            "apiVersion": "2023-01-01-preview",
+            "name": "[concat(parameters('namespaces_tradeProcessingIn_name'), '/inventory/tradeProcessing_inventory_policy')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_tradeProcessingIn_name'), 'inventory')]",
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_tradeProcessingIn_name'))]"
+            ],
+            "properties": {
+                "rights": [
+                    "Listen"
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs/authorizationrules",
+            "apiVersion": "2023-01-01-preview",
+            "name": "[concat(parameters('namespaces_tradeProcessingIn_name'), '/securityin/tradeProcessing_securityin_policy')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_tradeProcessingIn_name'), 'securityin')]",
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_tradeProcessingIn_name'))]"
+            ],
+            "properties": {
+                "rights": [
+                    "Listen"
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs/authorizationrules",
+            "apiVersion": "2023-01-01-preview",
+            "name": "[concat(parameters('namespaces_tradeProcessingIn_name'), '/tradein/tradeProcessing_tradein_policy')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_tradeProcessingIn_name'), 'tradein')]",
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_tradeProcessingIn_name'))]"
+            ],
+            "properties": {
+                "rights": [
+                    "Listen"
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs/authorizationrules",
+            "apiVersion": "2023-01-01-preview",
+            "name": "[concat(parameters('namespaces_tradeProcessingIn_name'), '/trader/tradeProcessing_trader_policy')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_tradeProcessingIn_name'), 'trader')]",
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_tradeProcessingIn_name'))]"
+            ],
+            "properties": {
+                "rights": [
+                    "Listen"
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+            "apiVersion": "2023-01-01-preview",
+            "name": "[concat(parameters('namespaces_tradeProcessingIn_name'), '/inventory/$Default')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_tradeProcessingIn_name'), 'inventory')]",
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_tradeProcessingIn_name'))]"
+            ],
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+            "apiVersion": "2023-01-01-preview",
+            "name": "[concat(parameters('namespaces_tradeProcessingIn_name'), '/securityin/$Default')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_tradeProcessingIn_name'), 'securityin')]",
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_tradeProcessingIn_name'))]"
+            ],
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+            "apiVersion": "2023-01-01-preview",
+            "name": "[concat(parameters('namespaces_tradeProcessingIn_name'), '/tradein/$Default')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_tradeProcessingIn_name'), 'tradein')]",
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_tradeProcessingIn_name'))]"
+            ],
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+            "apiVersion": "2023-01-01-preview",
+            "name": "[concat(parameters('namespaces_tradeProcessingIn_name'), '/trader/$Default')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_tradeProcessingIn_name'), 'trader')]",
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_tradeProcessingIn_name'))]"
+            ],
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+            "apiVersion": "2023-01-01-preview",
+            "name": "[concat(parameters('namespaces_tradeProcessingIn_name'), '/inventory/preview_data_consumer_group')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_tradeProcessingIn_name'), 'inventory')]",
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_tradeProcessingIn_name'))]"
+            ],
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+            "apiVersion": "2023-01-01-preview",
+            "name": "[concat(parameters('namespaces_tradeProcessingIn_name'), '/tradein/preview_data_consumer_group')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_tradeProcessingIn_name'), 'tradein')]",
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_tradeProcessingIn_name'))]"
+            ],
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+            "apiVersion": "2023-01-01-preview",
+            "name": "[concat(parameters('namespaces_tradeProcessingIn_name'), '/inventory/tradeprocessing_inventory_consumer_group')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_tradeProcessingIn_name'), 'inventory')]",
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_tradeProcessingIn_name'))]"
+            ],
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+            "apiVersion": "2023-01-01-preview",
+            "name": "[concat(parameters('namespaces_tradeProcessingIn_name'), '/securityin/tradeprocessing_securityin_consumer_group')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_tradeProcessingIn_name'), 'securityin')]",
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_tradeProcessingIn_name'))]"
+            ],
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+            "apiVersion": "2023-01-01-preview",
+            "name": "[concat(parameters('namespaces_tradeProcessingIn_name'), '/tradein/tradeprocessing_tradein_consumer_group')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_tradeProcessingIn_name'), 'tradein')]",
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_tradeProcessingIn_name'))]"
+            ],
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+            "apiVersion": "2023-01-01-preview",
+            "name": "[concat(parameters('namespaces_tradeProcessingIn_name'), '/trader/tradeprocessing_trader_consumer_group')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_tradeProcessingIn_name'), 'trader')]",
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_tradeProcessingIn_name'))]"
+            ],
+            "properties": {}
+        }
+    ]
+}
