@@ -1,0 +1,42 @@
+[
+    {
+        "inventoryId": 2345,
+        "inventoryName": "Hybrids"
+    },
+    {
+        "inventoryId": 2346,
+        "inventoryName": "High Grade"
+    },
+    {
+        "inventoryId": 2347,
+        "inventoryName": "High Yield"
+    },
+    {
+        "inventoryId": 2348,
+        "inventoryName": "REIT"
+    },
+    {
+        "inventoryId": 2349,
+        "inventoryName": "NIFTY"
+    },
+    {
+        "inventoryId": 2350,
+        "inventoryName": "EMEA Gold"
+    },
+    {
+        "inventoryId": 2351,
+        "inventoryName": "144a"
+    },
+    {
+        "inventoryId": 2352,
+        "inventoryName": "Bullets"
+    },
+    {
+        "inventoryId": 2353,
+        "inventoryName": "EDSF"
+    },
+    {
+        "inventoryId": 2354,
+        "inventoryName": "Floaters"
+    }
+]
