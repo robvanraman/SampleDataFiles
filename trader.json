@@ -1,0 +1,44 @@
+[
+    {
+        "traderId": 1234,
+        "traderName": "Raman",
+        "Desk": "RL",
+        "location": "Hyderbabad"
+    },
+    {
+        "traderId": 1235,
+        "traderName": "Rahul",
+        "Desk": "OL",
+        "location": "Bengaluru"
+    },
+    {
+        "traderId": 1236,
+        "traderName": "Rohan",
+        "Desk": "Asia",
+        "location": "Pune"
+    },
+    {
+        "traderId": 1237,
+        "traderName": "Satya",
+        "Desk": "EMEA",
+        "location": "London"
+    },
+    {
+        "traderId": 1238,
+        "traderName": "Praveen",
+        "Desk": "Asia",
+        "location": "Hong Kong"
+    },
+    {
+        "traderId": 1239,
+        "traderName": "Krishna",
+        "Desk": "Asia",
+        "location": "Sri Lanka"
+    },
+    {
+        "traderId": 1240,
+        "traderName": "Srini",
+        "Desk": "OL",
+        "location": "Vizag"
+    }
+]
