@@ -1,0 +1,20 @@
+[
+    {
+        "traderId": 1234,
+        "inventoryId": 2347,
+        "cusip": "ABCDEFGHI",
+        "quantity": 200
+    },
+    {
+        "traderId": 1234,
+        "inventoryId": 2347,
+        "cusip": "ABCDEFGHI",
+        "quantity": 200
+    },
+    {
+        "traderId": 1234,
+        "inventoryId": 2347,
+        "cusip": "ABCDEFGHI",
+        "quantity": 200
+    }
+]
