@@ -1,0 +1,76 @@
+--This table can also be called as "Securities","Bonds","Fixed Income Products", "Debt Security", "Fixed Income Instrument"
+CREATE TABLE Securities (
+CUSIP varchar(10) NOT NULL, unique id,  --name of the bond, name of the security, name of the instrument, name of the debt, name of the issued Fixed Income Product 
+DESC varchar(50) DEFAULT NULL,  -- Description, full name
+TICKER varchar(5) DEFAULT NULL,   ----issue, issuer short name, symbol
+OUTSTANDIG  bigint DEFAULT NULL, -- EQUIVALENT TO marketcap of the stock, total amount, par amount, notional, par, principal, corpus
+CUOPON decimal (10,2) DEFAULT NULL, -- yearly return, annual return, fixed interest rate 
+maturity date DEFAULT NULL, -- validity of the bond, par amount date
+RATING varchar(50)	-- performace measure
+PRIMARY KEY (cusip)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
+--This table can also be called as "offerings","prices", "our prices", "dealer offers"
+CREATE TABLE Offers (
+CUSIP varchar(10) NOT NULL, unique id,  --name of the bond, name of the security, name of the instrument, name of the debt, name of the issued Fixed Income Product 
+tier int DEFAULT NULL,  -- client ranking
+ecn varchar(5) DEFAULT NULL,   ----market place for electronic trades
+quantity  bigint DEFAULT NULL, --total amount, par amount, notional
+price decimal (10,2) DEFAULT NULL, -- bond price
+benchmark  varchar(5)  -- treasury benchmark
+spread decimal (10,2)   --spread on treasury
+Date  DATETIME  -- offer time, time of price, there can be 100 entries in a minute also
+axe  boolean    -- priority offers
+Firm boolean   -- we will honour this price if firm is true
+PRIMARY KEY (cusip)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
+--This table can also be called as "rfq's","wic's", "trades"
+CREATE TABLE Trades (
+CUSIP varchar(10) NOT NULL, unique id,  --name of the bond, name of the security, name of the instrument, name of the debt, name of the issued Fixed Income Product 
+ecn varchar(5) DEFAULT NULL,   ----market place for electronic trades
+quantity  bigint DEFAULT NULL, --total amount, par amount, notional
+price decimal (10,2) DEFAULT NULL, -- bond price
+benchmark  varchar(5)  -- treasury benchmark
+negotiate Bool -- whether client is ready for negotiation
+Date  DATETIME  -- Trade time, 
+status  varchar(10)  -- trade status, done means trade was executed
+
+PRIMARY KEY (cusip)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
+--This table can also be called as "rfq's","post process feed", "market trades"
+CREATE TABLE Trace (
+CUSIP varchar(10) NOT NULL, unique id,  --name of the bond, name of the security, name of the instrument, name of the debt, name of the issued Fixed Income Product 
+client varchar(5) DEFAULT NULL,   ----market place for electronic trades
+quantity  bigint DEFAULT NULL, --total amount, par amount, notional
+price decimal (10,2) DEFAULT NULL, -- bond price
+ExecutedDate  DATETIME  -- Trade time
+PRIMARY KEY (cusip)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
+
+
+show me last 5 traded bonds
+select top 5 * from trades order by date desc
+
+show me my last 5 missed bonds and by how much?
+select top 5 * from trades t1 inner join trace t2 on t1.cusip = t2.cusip and t1.quantity = t2.quantity where 
+client <> 'WFS'
+
+what was the spread I missed those?
+select top 5 cusip, t1.price-t2.price as spread from trades t1 inner join trace t2 on t1.cusip = t2.cusip and t1.quantity = t2.quantity where 
+client <> 'WFS' 
+
+who executed it for how much?
+select top 5 client, t2.price as spread from trades t1 inner join trace t2 on t1.cusip = t2.cusip and t1.quantity = t2.quantity where 
+client <> 'WFS' 
+
