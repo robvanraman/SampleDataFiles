@@ -72,7 +72,7 @@ order by margin desc
 --are there any bonds that other dealers are trading and we are not?
 select * from trace where client<>'WFS' and cusip not in (select cusip from trade)
 
---did we offer them at all?
+--out of the top traded bonds we did not trade, for which ones we did not have offerings?
 select * from trace where client<>'WFS' and cusip in (select cusip from offers)
 
 
