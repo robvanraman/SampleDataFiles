@@ -61,9 +61,8 @@ PRIMARY KEY (cusip)
 --what are the top 5 traded bonds today?
 select top 5 cusip, sum(quantity) as quantity from trace group by cusip order by quantity
 
---How many out-of-top traded bonds today did we miss?
-select cusip, sum(quantity) as quantity from trace where client <> 'WFS'
-group by cusip order by quantity
+--Which bonds out of the top traded bonds today did we miss?
+select distinct cusip from trace where client <> 'WFS' and cusip not in (select cusip from trade )
 
 --by what margin did we miss the top traded bonds today?
 select t1.cusip,( t1.price - t2.price) as margin from trades t1 inner join trace t2 on t1.cusip = t2.cusip and t1.quantity = t2.quantity where 
