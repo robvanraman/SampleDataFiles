@@ -73,6 +73,6 @@ order by margin desc
 select * from trace where client<>'WFS' and cusip not in (select cusip from trade)
 
 --out of the top traded bonds we did not trade, for which ones we did not have offerings?
-select * from trace where client<>'WFS' and cusip in (select cusip from offers)
+select * from trace where client<>'WFS' and cusip not in (select cusip from offers)
 
 
