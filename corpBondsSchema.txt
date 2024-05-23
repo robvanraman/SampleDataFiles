@@ -64,8 +64,8 @@ show me last 5 traded bonds
 select top 5 * from trades order by date desc
 
 show me my last 5 missed bonds and by how much?
-select top 5 * from trades t1 inner join trace t2 on t1.cusip = t2.cusip and t1.quantity = t2.quantity where 
-client <> 'WFS'
+select t1.cusip,( t1.price - t2.price) as margin from from trades t1 inner join trace t2 on t1.cusip = t2.cusip and t1.quantity = t2.quantity where 
+client <> 'WFS' order by margin desc
 
 what was the spread I missed those?
 select top 5 cusip, t1.price-t2.price as spread from trades t1 inner join trace t2 on t1.cusip = t2.cusip and t1.quantity = t2.quantity where 
