@@ -3,6 +3,7 @@ CREATE TABLE Securities (
 CUSIP varchar(10) NOT NULL, unique id,  --name of the bond, name of the security, name of the instrument, name of the debt, name of the issued Fixed Income Product 
 DESC varchar(50) DEFAULT NULL,  -- Description, full name
 TICKER varchar(5) DEFAULT NULL,   ----issue, issuer short name, symbol
+ISSUER VARCHAR(100) -- THE Organization that has borrowed 
 OUTSTANDIG  bigint DEFAULT NULL, -- EQUIVALENT TO marketcap of the stock, total amount, par amount, notional, par, principal, corpus
 CUOPON decimal (10,2) DEFAULT NULL, -- yearly return, annual return, fixed interest rate 
 maturity date DEFAULT NULL, -- validity of the bond, par amount date
