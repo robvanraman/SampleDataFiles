@@ -58,20 +58,22 @@ PRIMARY KEY (cusip)
 
 
 
+--what are the top 5 traded bonds today?
+select top 5 cusip, sum(quantity) as quantity from trace group by cusip order by quantity
 
+--How many did we miss out of these?
+select top 5 cusip, sum(quantity) as quantity from trace where client <> 'WFS'
+group by cusip order by quantity
 
-show me last 5 traded bonds
-select top 5 * from trades order by date desc
+--by what margin did we miss those?
+select t1.cusip,( t1.price - t2.price) as margin from trades t1 inner join trace t2 on t1.cusip = t2.cusip and t1.quantity = t2.quantity where 
+client <> 'WFS' and cusip in (select top 5 cusip, sum(quantity) as quantity from trace group by cusip order by quantity)
+order by margin desc
 
-show me my last 5 missed bonds and by how much?
-select t1.cusip,( t1.price - t2.price) as margin from from trades t1 inner join trace t2 on t1.cusip = t2.cusip and t1.quantity = t2.quantity where 
-client <> 'WFS' order by margin desc
+--are there any bonds that other dealers are trading and we are not?
+select * from trace where client<>'WFS' and cusip not in (select cusip from trade)
 
-what was the spread I missed those?
-select top 5 cusip, t1.price-t2.price as spread from trades t1 inner join trace t2 on t1.cusip = t2.cusip and t1.quantity = t2.quantity where 
-client <> 'WFS' 
+--did we offer them at all?
+select * from trace where client<>'WFS' and cusip in (select cusip from offers)
 
-who executed it for how much?
-select top 5 client, t2.price as spread from trades t1 inner join trace t2 on t1.cusip = t2.cusip and t1.quantity = t2.quantity where 
-client <> 'WFS' 
 
