@@ -77,7 +77,9 @@ select * from trace where client<>'WFS' and cusip not in (select cusip from trad
 select * from trace where client<>'WFS' and cusip not in (select cusip from offers)
 
 --whats that industry-wise percentage of my trades today
-select industry, count(*) from trades where status = 'Done' group by industry
+select s.industry, SUM(t.quantity) from trades t
+inner join security s on s.cusip = t.cusip
+where t.status = 'Done' group by s.industry
 
 
 
