@@ -7,6 +7,7 @@ ISSUER VARCHAR(100) -- THE Organization that has borrowed
 OUTSTANDIG  bigint DEFAULT NULL, -- EQUIVALENT TO marketcap of the stock, total amount, par amount, notional, par, principal, corpus
 CUOPON decimal (10,2) DEFAULT NULL, -- yearly return, annual return, fixed interest rate 
 maturity date DEFAULT NULL, -- validity of the bond, par amount date
+Industry varchar(100), -- The sector of the issuer
 RATING varchar(50)	-- performace measure
 PRIMARY KEY (cusip)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -74,5 +75,9 @@ select * from trace where client<>'WFS' and cusip not in (select cusip from trad
 
 --out of the top traded bonds we did not trade, for which ones we did not have offerings?
 select * from trace where client<>'WFS' and cusip not in (select cusip from offers)
+
+--whats that industry-wise percentage of my trades today
+select industry, count(*) from trades where status = 'Done' group by industry
+
 
 
