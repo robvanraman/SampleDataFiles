@@ -1,1 +1,19 @@
 
+--This table has the customer and their payment info
+CREATE TABLE Customer (
+ACCNO VARCHAR(10) NOT NULL, unique id,  --Credit card no, card no, debt identifier
+NAME VARCHAR(50), --NAME OF THE CUSTOMER, BORROWER, CARD HOLDER
+CITY VARCHAR(50),
+OUTSTANDING VARCHAR(50) DEFAULT NULL,  -- Description, full name
+CREDITLINE decimal (10,2) DEFAULT NULL,   ----CREDITLIMIT, APPROVED AMOUNT
+COLLATERAL boolean --  ANY HARD OR SOFT ASSET THAT CAN BE COVER FOR THE CREDIT LINE
+LASTPAYMENT DATETIME,  -LAST PAYMENT, LAST EMI
+BROKENPROMISES int,    --CONTACTED BY CUSTOMER CARE FOR PAYMENTS, PROMOSED A DATE
+LASTCONTACT DATETIME
+PRIMARY KEY (ACCNO),
+)
+
+
+
+Show me the trend of customers by city who entered a 99 day delinquency today?
+How many out of them did we reach out for credit line adjustment?
