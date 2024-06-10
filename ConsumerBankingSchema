@@ -10,7 +10,7 @@ COLLATERAL boolean --  ANY HARD OR SOFT ASSET THAT CAN BE COVER FOR THE CREDIT L
 LASTPAYMENT DATETIME,  -LAST PAYMENT, LAST EMI
 BROKENPROMISES int,    --CONTACTED BY CUSTOMER CARE FOR PAYMENTS, PROMOSED A DATE
 LASTCONTACT DATETIME,
-ADJUSTLIMIT boolen,
+ADJUSTLIMIT boolean,
 PRIMARY KEY (ACCNO),
 )
 
@@ -21,9 +21,33 @@ SELECT CITY, COUNT(*) FROM Customer WHERE DATEDIFF(LASTPAYMENT, getdate(), 99) >
 GROUP BY CITY
 
 --How many of them did we reach out for credit line adjustment?
-SELECT CITY, COUNT(*) FROM Customer WHERE DATEDIFF(LASTPAYMENT, getdate(), 99) >= 99 and lastcontact = getdate()
+SELECT CITY, COUNT(*) FROM Customer WHERE DATEDIFF(LASTPAYMENT, getdate(), 99) >= 99 and lastcontact = getdate() and brokenpromises > 5
 GROUP BY CITY
 
 --How many of them agreed on cedit line adjustment or payment re -tructuring?
 SELECT CITY, COUNT(*) FROM Customer WHERE DATEDIFF(LASTPAYMENT, getdate(), 99) >= 99 and lastcontact = getdate() and adjustlimit = true
 GROUP BY CITY
+
+
+
+
+INSERT INTO CUSTOMER VALUES ('101', 'Bernard', 'Kansas', 34500, 36000, true, '6/10/2024', 5, '4/5/2023', 7, '4/5/2023', false)
+INSERT INTO CUSTOMER VALUES ('102', 'John', 'Dallas', 34500, 36000, true, '6/10/2024', 5, '4/5/2023', 8, '4/5/2023', false)
+INSERT INTO CUSTOMER VALUES ('103', 'Sachin', 'NY', 34500, 36000, true, '6/10/2024', 5, '4/5/2023', 5, '4/5/2023', false)
+INSERT INTO CUSTOMER VALUES ('104', 'Lucy', 'Baltimore', 34500, 36000, true, '6/10/2024', 5, '4/5/2023', 6, '4/5/2023', false)
+INSERT INTO CUSTOMER VALUES ('105', 'Sonia', 'Newark', 34500, 36000, true, '6/10/2024', 5, '4/5/2023', 9, '4/5/2023', false)
+INSERT INTO CUSTOMER VALUES ('106', 'Bell', 'Philli', 34500, 36000, true, '6/10/2024', 5, '4/5/2023', 10, '4/5/2023', false)
+INSERT INTO CUSTOMER VALUES ('107', 'Andrew', 'Texas', 34500, 36000, true, '6/10/2024', 5, '4/5/2023', 11, '4/5/2023', false)
+INSERT INTO CUSTOMER VALUES ('108', 'Grant', 'Atlantic City', 34500, 36000, true, '6/10/2024', 5, '4/5/2023', 7, '4/5/2023', false)
+INSERT INTO CUSTOMER VALUES ('109', 'Rajdeep', 'Kansas', 10000, 36000, true, '6/10/2024', 5, '4/5/2023', 9, '4/5/2023', false)
+
+
+INSERT INTO CUSTOMER VALUES ('110', 'Gary', 'Kansas', 34500, 36000, true, '6/10/2024', 5, '4/5/2023', 7, '4/5/2023', false)
+INSERT INTO CUSTOMER VALUES ('111', 'Ben', 'Dallas', 34500, 36000, true, '6/10/2024', 5, '4/5/2023', 8, '4/5/2023', false)
+INSERT INTO CUSTOMER VALUES ('112', 'Tom', 'NY', 34500, 36000, true, '6/10/2024', 5, '4/5/2023', 5, '4/5/2023', false)
+INSERT INTO CUSTOMER VALUES ('113', 'Albert', 'Baltimore', 34500, 36000, true, '6/10/2024', 5, '4/5/2023', 6, '4/5/2023', false)
+INSERT INTO CUSTOMER VALUES ('114', 'Brian', 'Newark', 34500, 36000, true, '6/10/2024', 5, '4/5/2023', 9, '4/5/2023', false)
+INSERT INTO CUSTOMER VALUES ('115', 'Kevin', 'Philli', 34500, 36000, true, '6/10/2024', 5, '4/5/2023', 10, '4/5/2023', false)
+INSERT INTO CUSTOMER VALUES ('116', 'Ranga', 'Texas', 34500, 36000, true, '6/10/2024', 5, '4/5/2023', 11, '4/5/2023', false)
+INSERT INTO CUSTOMER VALUES ('117', 'Raul', 'Atlantic City', 34500, 36000, true, '6/10/2024', 5, '4/5/2023', 7, '4/5/2023', false)
+INSERT INTO CUSTOMER VALUES ('118', 'Venkat', 'Kansas', 10000, 36000, true, '6/10/2024', 5, '4/5/2023', 9, '4/5/2023', false)
