@@ -13,40 +13,45 @@ Let's look at the product in Action,
 So its a regular day on the trading  floor and the desk looks quite busy, lets look ate what our head Trader
 **Over to you Arjun for the product demonstration**
 
-==============================================================
+<br />
+
 **Arjun** : 
 q1 : Enter question here
 q2 : Enter question here
 
-==============================================================
+<br />
+
 **Raman** : **That Last Question is a another classic example of what the product is capable, that request from Trader was out of the blue and very difficult to be capture and implement via SDLC  but is easily possible here**, Now,  Let's see what the Card Collection Floor Manager is up to, 
 
-============================================================================================================================================
+<br />
+
 **Arjun** : 
 q1 : Enter question here
 q2 : Enter question here
 
-============================================================
+<br />
+
 **Raman** : Now, Let's see what the Card Collection Floor Manager is up to, 
 
-============================================================
+<br />
+
 **Arjun** : 
 q1 : Enter question here
 q2 : Enter question here
 
-============================================================
+<br />
 **Raman** : Lets look at another user case on how Scrum Master would leverage the tool.
 
-============================================================
+<br />
 **Arjun** :
 q1 : Enter question here
 q2 : Enter question here
 
-============================================================
+<br />
 **Raman** : That was the demonstration of how this product can be useful for multiple domains, our Numbers expert will take us through the unit economics 
 **Over to you Partiban**
 
-===========================================================
+<br />
 **Partiban** : 
 
 We divided the the SDLC into 2 passes, development and onboarding, the first year would be full of development of the product and we will engage 3 dev's. we are only on spend for first year and non savings or revenue for 1st year.
@@ -58,5 +63,5 @@ we would start onboarding apps by lob and our savings will be in terms of reloca
 TALK MORE ABOUT UNIT ECONOMICS
 
 **with that,  would pass on to Arjun to take us through the flow and architecture**
-**===========================================================
+<br />
 **Partiban** :
