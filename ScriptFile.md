@@ -70,4 +70,7 @@ TALK MORE ABOUT UNIT ECONOMICS
 **with that,  would pass on to Arjun to take us through the flow and architecture**
 <hr />
 
-**Partiban** :
+**Arjun** :
+
+start with high level details - voice - text - sql - data
+Talk about the opensource, tech stack and all tech details
