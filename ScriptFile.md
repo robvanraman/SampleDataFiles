@@ -17,9 +17,10 @@ So its a regular day on the trading  floor and the desk looks quite busy, lets l
 
 **Arjun** : 
 q1 : Enter question here
+
 q2 : Enter question here
 
-<br />
+<hr />
 
 **Raman** : **That Last Question is a another classic example of what the product is capable, that request from Trader was out of the blue and very difficult to be capture and implement via SDLC  but is easily possible here**, Now,  Let's see what the Card Collection Floor Manager is up to, 
 
@@ -27,6 +28,7 @@ q2 : Enter question here
 
 **Arjun** : 
 q1 : Enter question here
+
 q2 : Enter question here
 
 <hr />
@@ -37,6 +39,7 @@ q2 : Enter question here
 
 **Arjun** : 
 q1 : Enter question here
+
 q2 : Enter question here
 
 <br />
