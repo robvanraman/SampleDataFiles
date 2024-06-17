@@ -13,7 +13,7 @@ Let's look at the product in Action,
 So its a regular day on the trading  floor and the desk looks quite busy, lets look ate what our head Trader
 **Over to you Arjun for the product demonstration**
 
-<br />
+<hr />
 
 **Arjun** : 
 q1 : Enter question here
