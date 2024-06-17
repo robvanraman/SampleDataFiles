@@ -51,10 +51,12 @@ q1 : Enter question here
 q2 : Enter question here
 
 <hr />
+
 **Raman** : That was the demonstration of how this product can be useful for multiple domains, our Numbers expert will take us through the unit economics 
 **Over to you Partiban**
 
 <hr />
+
 **Partiban** : 
 
 We divided the the SDLC into 2 passes, development and onboarding, the first year would be full of development of the product and we will engage 3 dev's. we are only on spend for first year and non savings or revenue for 1st year.
@@ -67,4 +69,5 @@ TALK MORE ABOUT UNIT ECONOMICS
 
 **with that,  would pass on to Arjun to take us through the flow and architecture**
 <hr />
+
 **Partiban** :
