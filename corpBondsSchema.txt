@@ -42,6 +42,8 @@ negotiate Bool -- whether client is ready for negotiation
 Date  DATETIME  -- Trade time, 
 status  varchar(10)  -- trade status, done means trade was executed
 dealer varchar(5) DEFAULT NULL  ----market place for electronic trades
+client varchar(5) DEFAULT NULL  ----the retail client who wants to trade via dealers
+tier int DEFAULT NULL,  -- client ranking
 
 PRIMARY KEY (cusip)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
