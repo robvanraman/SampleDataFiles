@@ -41,7 +41,7 @@ benchmark  varchar(5)  -- treasury benchmark
 negotiate Bool -- whether client is ready for negotiation
 Date  DATETIME  -- Trade time, 
 status  varchar(10)  -- trade status, done means trade was executed
-client varchar(5) DEFAULT NULL  ----market place for electronic trades
+dealer varchar(5) DEFAULT NULL  ----market place for electronic trades
 
 PRIMARY KEY (cusip)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -51,7 +51,7 @@ PRIMARY KEY (cusip)
 --This table can also be called as "rfq's","post process feed", "market trades"
 CREATE TABLE Trace (
 CUSIP varchar(10) NOT NULL, unique id,  --name of the bond, name of the security, name of the instrument, name of the debt, name of the issued Fixed Income Product 
-client varchar(5) DEFAULT NULL,   ----market place for electronic trades
+dealer varchar(5) DEFAULT NULL,   ----market place for electronic trades
 quantity  bigint DEFAULT NULL, --total amount, par amount, notional
 price decimal (10,2) DEFAULT NULL, -- bond price
 ExecutedDate  DATETIME  -- Trade time
@@ -64,18 +64,28 @@ PRIMARY KEY (cusip)
 select top 5 cusip, sum(quantity) as quantity from trace group by cusip order by quantity
 
 --Which bonds out of the top traded bonds today did we miss?
-select distinct cusip from trace where client <> 'WFS' and cusip not in (select cusip from trade )
+select distinct cusip from trace where dealer <> 'WFS' and cusip not in (select cusip from trade )
 
 --by what margin did we miss the top traded bonds today?
 select t1.cusip,( t1.price - t2.price) as margin from trades t1 inner join trace t2 on t1.cusip = t2.cusip and t1.quantity = t2.quantity where 
-client <> 'WFS' and cusip in (select top 5 cusip, sum(quantity) as quantity from trace group by cusip order by quantity)
+dealer <> 'WFS' and cusip in (select top 5 cusip, sum(quantity) as quantity from trace group by cusip order by quantity)
 order by margin desc
 
 --are there any bonds that other dealers are trading and we are not?
-select * from trace where client<>'WFS' and cusip not in (select cusip from trade)
+select * from trace where dealer<>'WFS' and cusip not in (select cusip from trade)
+
+
+--do we have live offerings on them?
+select ticker, cusip, quantity from offers where offertype='live' and cusip in (select distinct cusip from trace where dealer <> 'WFS' and cusip not in (select cusip from trade ))
+
+--we don't want to go short in this volatile season, compare the available quantity with current demand on these top traded bonds?
+select o.quantity as supply, t.quantity as demand, (o.quantity-t.quantity) as Net  from offers o 
+inner join trade t on t.cusip = o.cusip
+where offertype='live' and o.cusip in (select distinct cusip from trace where dealer <> 'WFS' and cusip not in (select cusip from trade ))
+
 
 --out of the top traded bonds we did not trade, for which ones we did not have offerings?
-select * from trace where client<>'WFS' and cusip not in (select cusip from offers)
+select * from trace where dealer<>'WFS' and cusip not in (select cusip from offers)
 
 --whats that industry-wise percentage of my trades today
 select s.industry, SUM(t.quantity) from trades t
