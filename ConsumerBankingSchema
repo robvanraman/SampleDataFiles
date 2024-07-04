@@ -51,3 +51,29 @@ INSERT INTO CUSTOMER VALUES ('115', 'Kevin', 'Philli', 34500, 36000, true, '6/10
 INSERT INTO CUSTOMER VALUES ('116', 'Ranga', 'Texas', 34500, 36000, true, '6/10/2024', 5, '4/5/2023', 11, '4/5/2023', false)
 INSERT INTO CUSTOMER VALUES ('117', 'Raul', 'Atlantic City', 34500, 36000, true, '6/10/2024', 5, '4/5/2023', 7, '4/5/2023', false)
 INSERT INTO CUSTOMER VALUES ('118', 'Venkat', 'Kansas', 10000, 36000, true, '6/10/2024', 5, '4/5/2023', 9, '4/5/2023', false)
+
+
+
+
+
+Corp Bond Head Trader''s Insights - Money Making via Trading
+
+1. what are the top 5 traded bonds today?
+2. Which bonds out of the top traded bonds today did we miss?
+3. By what margin did we miss the top traded bonds today?
+4. do we have live offerings on them?
+5. we don''t want to go short in this volatile season, compare the available quantity with current demand on these top traded bonds?
+6. by any chance did we mark them as axed offerings?
+7. tell me if they are marked as firm ?
+
+------------------------------------------------------------------------------------------------------------------
+Credit Card Collection Rep - Debt Management and Recovery
+
+1. Show me the trend of customers by city who entered final delinquency today or nearing chageoff
+2. How many of them agreed on cedit line adjustment or payment re-structuring
+3  how many out of them did we reach out for payment restructuring?
+4. which out of those are we charging ooff this week?
+5. how many of those made partial payments?  -- so they are provided with some help in terms of waiving off the late fee, so they are not sent to chargeoff
+
+
+-----------------------------------------------------------------------------------------------
